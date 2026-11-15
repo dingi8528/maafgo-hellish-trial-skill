@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="paper" x2="1" y2="1"><stop stop-color="#faf8ff"/><stop offset="1" stop-color="#eee7f5"/></linearGradient>
+    <radialGradient id="light"><stop stop-color="#ffffff" stop-opacity=".9"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+    <pattern id="diamonds" width="48" height="48" patternUnits="userSpaceOnUse"><path d="M24 0 48 24 24 48 0 24Z" fill="none" stroke="#b29bbd" stroke-opacity=".13" stroke-width=".6"/></pattern>
+  </defs>
+  <path fill="url(#paper)" d="M0 0h1920v1080H0z"/>
+  <path fill="url(#diamonds)" d="M0 0h1920v1080H0z"/>
+  <ellipse cx="350" cy="100" rx="1000" ry="650" fill="url(#light)"/>
+  <path d="M24 14h1850" stroke="#c3a75f" stroke-opacity=".6"/>
+</svg>

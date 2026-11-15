@@ -10,6 +10,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -m pip install Pillow imageio-ffmpeg
+      - run: python -m pip install Pillow imageio-ffmpeg websockets psutil
       - run: python -m unittest discover -s tests -v
       - run: python skills/bilibili-video-analysis/scripts/test_bilibili.py -v
+      - run: node --check skills/maafgo-hellish-trial/assets/live/app.js
+      - run: python skills/maafgo-hellish-trial/scripts/check_live_view.py --output output/browser-check --benchmark-seconds 2

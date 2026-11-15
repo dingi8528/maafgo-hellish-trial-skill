@@ -15,6 +15,17 @@
 
 补充了实战中容易遗漏的事项：任务基线、跨场补条件、冠位/羁绊 NP50 实际设置、宝具攻击与辅助效果的区别、技能真实冷却、助战 MIX、随机等待、中途恢复、最终整合版复跑的证据标准。历史 2026-10/11 方案只作为案例，不自动视为现在的当期方案。
 
+## 两种展示方式
+
+调用时可以选择，未指定则保持原有简化版：
+
+| 模式 | 行为 |
+|---|---|
+| 简化版（默认） | 原有 MCP 挑战与策略保存流程，不启动网页或窗口共享 |
+| 有画面版 | 本地网页展示用户选择的模拟器窗口连续视频，目标30 FPS（可15 FPS），叠加 BB 人物循环、文字播报和任务核验面板 |
+
+有画面版首次需要用户点击“选择游戏窗口”，在浏览器系统弹窗中选择 MuMu 或实际模拟器；视频只在浏览器本页播放，后端只传战况 JSON，不转码、不录制、不新增 ADB 截图。文字播报允许数秒延迟，视频连续播放。背景、UI、约3MB的透明 BB 循环、静态图与重建脚本均随技能提供。[启动说明](skills/maafgo-hellish-trial/references/live-view.md) · [性能与验证](skills/maafgo-hellish-trial/references/live-performance.md)
+
 ## 零基础安装
 
 **无需 GitHub 账号。** 在本仓库点绿色 **Code → Download ZIP**，完整解压，把 `skills` 下两个目录复制到 AI 宿主的技能目录。例如 Codex 通常是：
@@ -29,6 +40,8 @@
 
 > 用 $maafgo-hellish-trial 帮我完成日服当前的地狱的试炼。先检查安装环境和版本，询问攻略偏好；每场核对任务进度，最后保存可编辑方案。默认本轮最多入战10场，只用自然AP，不用苹果、圣晶石、令咒和茶壶。
 
+需要展示时加一句：**“这次使用有画面版，打开本地观察页，我来选择共享模拟器窗口。”**
+
 只想先检查环境、做方案或测试到某个阶段时，直接说明停止点；安装技能本身不会启动游戏战斗。
 
 从旧包升级：此前随包的 `maa-mcp-debug` 已移除。仅当确认本机副本由本仓库安装且未自行修改时，才在备份后移除该旧副本；不要删除其他来源或自行维护的同名技能。
@@ -41,6 +54,7 @@
 - 已安装且能进入对应区服的模拟器。推荐 [MuMu](https://mumu.163.com/)，已有雷电等其他模拟器可由用户选择继续验证。
 - 上游 [Everything-Maa](https://github.com/KhazixW2/Everything-Maa) 技能、[MaaMCP](https://github.com/MaaXYZ/MaaMCP)、MaaFramework 与 MaaFGO。开发源码：[dingi8528/MaaFgo_NEW](https://github.com/dingi8528/MaaFgo_NEW)；桌面包：[xlxyvergil/MaaFgo Releases](https://github.com/xlxyvergil/MaaFgo/releases)。源码 ZIP 与桌面包不同，完整步骤见[安装与更新](skills/maafgo-hellish-trial/references/setup.md)。
 - 视频分析使用 Python，抽帧联系表用 Pillow，视频解码用 FFmpeg。可在隔离环境安装 `Pillow imageio-ffmpeg`；脚本不安装全局依赖。公开视频访问受限时可使用用户有权提供的本地视频，不捆绑登录 Cookie 或第三方解析服务。
+- 有画面版的后端仅用 Python 标准库，前端无 npm 构建或 CDN；运行随包 BB 循环无需 FFmpeg。窗口共享优先使用支持该能力的桌面 Chrome/Edge，需用户在浏览器中选择窗口。实际帧率与开销以本机测试为准。
 
 每次联网检查版本和下载速度，先报告估计时间。下载很慢时由用户选择继续、手动下载或使用自己信任的方式；本包不会自动改全局代理或切不明镜像。
 
@@ -61,8 +75,10 @@ python -X utf8 -m unittest discover -s tests -v
 python -X utf8 skills/bilibili-video-analysis/scripts/test_bilibili.py -v
 ```
 
+展示页的开发验证可另安装 `websockets psutil` 后运行 `python skills/maafgo-hellish-trial/scripts/check_live_view.py --output output/browser-check`。它使用离线合成的连续 MediaStream 测试视频和生命周期，不代替真实模拟器窗口共享验收，也不操作游戏。
+
 测试使用本地 HTTP 服务、临时 Git 仓库和合成短媒体，验证测速边界、版本未知状态、下载与完整性检查；不消耗游戏资源。FFmpeg/Pillow 不可用时相关媒体测试会跳过，应按实际测试输出报告。脚本测试通过不证明任意新一期已经实机适配。
 
 ## 许可与来源
 
-本包内容以 [AGPL-3.0-or-later](LICENSE) 发布，来源及依赖边界见 [NOTICE.md](NOTICE.md)。Everything-Maa 等外部技能由其上游许可管理，不因引用而改用本仓库许可。不包含上游 Maa 技能副本、MaaFGO 游戏资源、MaaMCP 二进制、B站攻略视频、账号数据或本机战斗截图。策略开发仍以所用 MaaFGO 版本的当前源码和 `AGENTS.md` 为准。
+本包自有代码和文档以 [AGPL-3.0-or-later](LICENSE) 发布，来源及依赖边界见 [NOTICE.md](NOTICE.md)。Everything-Maa 等外部技能与 BB 角色素材由其上游或原权利人许可管理，不因引用而改用本仓库许可。不包含上游 Maa 技能副本、MaaFGO 识别资源、MaaMCP 二进制、B站攻略视频、账号数据或本机战斗截图。策略开发仍以所用 MaaFGO 版本的当前源码和 `AGENTS.md` 为准。

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>BB亲 · 地狱试炼观察室</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="shell">
+    <header class="masthead">
+      <div class="brand"><span class="moon" aria-hidden="true">☾</span><div><h1>让 BB 亲帮忙打地狱试炼</h1><p>MaaFGO <span>×</span> BB CHANNEL</p></div></div>
+      <div class="viewer-controls" aria-label="展示设置">
+        <button id="start-capture" class="capture-button" type="button">选择游戏窗口</button>
+        <button id="stop-capture" type="button" hidden>停止共享</button>
+        <label class="refresh-control">视频 <select id="capture-fps"><option value="30">30 FPS</option><option value="15">15 FPS · 省电</option></select></label>
+        <label class="refresh-control">播报刷新 <select id="refresh-rate"><option value="1000">1 秒</option><option value="2000">2 秒</option><option value="5000">5 秒 · 省电</option></select></label>
+        <label class="animation-control"><input id="animate-bb" type="checkbox" checked><span>BB 动画</span></label>
+        <button id="fullscreen" type="button" title="切换全屏展示">全屏</button>
+      </div>
+    </header>
+
+    <div class="session-strip" aria-live="polite">
+      <div class="session-context"><span id="connection" class="connection pending">正在连接本地服务</span><span id="session-title">等待任务开始</span></div>
+      <div class="session-markers"><strong id="demo-badge" hidden>演示数据 · 非游戏进度</strong><span id="session-phase">准备中</span><span id="session-turn">—</span><span id="attempt-label">尚未入战</span></div>
+    </div>
+
+    <main class="broadcast">
+      <section class="game-window" aria-label="游戏窗口实时视频">
+        <div class="game-placeholder" id="game-placeholder">
+          <span class="waiting-orbit" aria-hidden="true">✦</span>
+          <h2>等待共享游戏窗口</h2>
+          <p>点击“选择游戏窗口”，在浏览器弹窗中选中模拟器窗口。</p>
+          <span>连续视频仅在本页显示 · 不上传、不录制、不操作游戏</span>
+        </div>
+        <video id="game-stream" autoplay muted playsinline aria-label="用户选择的共享窗口视频" hidden></video>
+        <div class="frame-overlay"><span id="frame-source">尚未共享</span><span id="frame-age">本地视频 · 目标 30 FPS</span></div>
+        <div id="frame-warning" class="frame-warning" hidden></div>
+      </section>
+
+      <aside class="side-column" aria-label="任务条件与BB亲">
+        <section class="mission-panel">
+          <header class="panel-heading"><div><h2>本场任务核验</h2><p>观察事件与游戏确认，分开记录</p></div><strong id="mission-count">—/—</strong></header>
+          <div class="mission-content">
+            <div class="evidence-summary"><span class="legend"><i class="dot confirmed"></i>有证据确认</span><span class="legend"><i class="dot observed"></i>仅观察到</span></div>
+            <div id="mission-grid" class="mission-grid" aria-label="任务状态索引"></div>
+            <div class="mission-empty" id="mission-empty"><span>◇</span><h3>等待读取当期任务</h3><p>任务数量与条件以当前游戏页面为准，暂不预设进度。</p></div>
+            <div id="mission-list" class="mission-list" aria-label="任务核验详情"></div>
+            <p class="observed-note" id="observed-note">尚无本场观察记录</p>
+            <footer class="account-progress"><div><span>游戏任务页</span><strong id="game-count">未读取</strong></div><p id="baseline-count">初始进度尚未记录</p><small>初始已完成项不算本轮新增；最终以任务页为准。</small></footer>
+          </div>
+        </section>
+        <div class="avatar-stage" aria-label="BB亲播报形象">
+          <div class="avatar-halo" aria-hidden="true"></div>
+          <img id="bb-poster" class="bb-media" src="/bb-poster.png" alt="BB亲" hidden>
+          <video id="bb-video" class="bb-media" autoplay muted loop playsinline preload="metadata" aria-hidden="true" poster="/bb-poster.png"><source src="/bb-loop.webm" type="video/webm"></video>
+          <div class="avatar-nameplate"><span>BB 亲 · 月之管理 AI</span></div>
+        </div>
+      </aside>
+
+      <section class="commentary" aria-label="当前播报" aria-live="polite" aria-atomic="true">
+        <div class="commentary-label"><strong>BB 亲正在指挥</strong><span>本地文字播报 · 可有延迟</span></div>
+        <div class="commentary-body"><h2 id="commentary-title">前辈，准备好了吗？</h2><p id="commentary-detail">先确认任务和方案，等真实事件到达后再为你播报。</p><time id="commentary-time"></time></div>
+      </section>
+    </main>
+
+    <footer class="page-footer"><span>窗口视频仅在浏览器本地显示 · 游戏操作仍由已授权的 MaaMCP 任务执行</span><span id="last-update">等待本地服务响应</span></footer>
+    <details class="history"><summary>查看最近播报 <span id="history-count">0</span></summary><ol id="event-list"></ol></details>
+  </div>
+  <div class="confirmation-toast" id="confirmation-toast" role="status" hidden><span>✓</span><div><strong>条件已有证据</strong><p id="confirmation-label"></p></div></div>
+</body>
+</html>
