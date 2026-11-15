@@ -35,6 +35,8 @@
 
 ## 运行需要什么
 
+以下要求已集中到 [主 SKILL.md 开头的前置检查](skills/maafgo-hellish-trial/SKILL.md#执行前必读与前置检查)。AI 首次使用必须完整阅读安装文档并验证，通过前仅可做必要的连接、截图与只读检查，不能点击游戏或启动操作任务；这些要求不依赖 AI 自动阅读本 README。
+
 - 能实际查看图片的 AI 模型，以及能访问本地文件、执行命令和调用 stdio MCP 的宿主。只支持文字或只返回截图路径时先解决图像输入，不能盲点代打。
 - 已安装且能进入对应区服的模拟器。推荐 [MuMu](https://mumu.163.com/)，已有雷电等其他模拟器可由用户选择继续验证。
 - 上游 [Everything-Maa](https://github.com/KhazixW2/Everything-Maa) 技能、[MaaMCP](https://github.com/MaaXYZ/MaaMCP)、MaaFramework 与 MaaFGO。开发源码：[dingi8528/MaaFgo_NEW](https://github.com/dingi8528/MaaFgo_NEW)；桌面包：[xlxyvergil/MaaFgo Releases](https://github.com/xlxyvergil/MaaFgo/releases)。源码 ZIP 与桌面包不同，完整步骤见[安装与更新](skills/maafgo-hellish-trial/references/setup.md)。
