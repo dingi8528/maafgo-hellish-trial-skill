@@ -25,6 +25,7 @@ python scripts/check_environment.py --project 'D:\Games\MaaFgo_NEW' --online
 | 桌面发行包 | https://github.com/xlxyvergil/MaaFgo/releases | 最新非预发布 Release，检查附件、平台与发行说明 |
 | MaaMCP | https://pypi.org/project/maa-mcp/ | PyPI 当前版本与 MCP 所在虚拟环境版本 |
 | MaaFramework Python | https://pypi.org/project/maafw/ | 分别检查 MCP 和 Agent 解释器版本，避免混用 |
+| 上游 Maa 通用技能 | https://github.com/KhazixW2/Everything-Maa | 按上游安装器/版本记录更新；不从本包复制 |
 
 开发仓库可能没有 Release；这不等于发行仓库没有更新。ZIP 没有 `.git` 时，仅靠目录名或源码 `interface.json.version` 无法确认提交最新；重下当前默认分支到新目录，或保留下载时间与 API SHA，不能伪称已核实旧 ZIP。在线检查被限流、403/404、网络失败时标记“无法确认”，保留原因并给用户链接，不把失败当“已是最新”。
 
@@ -37,8 +38,9 @@ python scripts/check_environment.py --project 'D:\Games\MaaFgo_NEW' --online
 公开仓库浏览、`Code → Download ZIP` 和公开 Release 附件下载均不要求注册。无需 Fork、创建仓库或配置令牌。
 
 1. 打开[技能包仓库](https://github.com/dingi8528/maafgo-hellish-trial-skill)，点绿色 **Code → Download ZIP**，完整解压。
-2. 将解压目录 `skills/` 下的三个技能文件夹，复制到当前 AI 宿主的技能目录。Codex 通常为用户目录下 `.codex/skills/`；其他宿主按其技能导入界面选择包含 `SKILL.md` 的目录。不要把 ZIP 本身当技能。
-3. 重新加载技能或重启宿主，输入 `$maafgo-hellish-trial`；如果宿主不识别 `$`，直接让它读取主技能的 `SKILL.md`，相邻技能也可按相对路径读取。
+2. 将解压目录 `skills/` 下的两个自有技能文件夹，复制到当前 AI 宿主的技能目录。Codex 通常为用户目录下 `.codex/skills/`；其他宿主按其技能导入界面选择包含 `SKILL.md` 的目录。不要把 ZIP 本身当技能。
+3. 从第三方上游 [Everything-Maa](https://github.com/KhazixW2/Everything-Maa) 安装所需 Maa 技能；安装选择见 [MCP 定制附录](mcp-customization.md#安装选择)。可以使用上游安装器，也可在无需账号的情况下从上游 `Code → Download ZIP` 取得完整目录；不要只复制一张 `SKILL.md` 而遗漏其引用文件。
+4. 重新加载技能或重启宿主，输入 `$maafgo-hellish-trial`；如果宿主不识别 `$`，直接让它读取主技能的 `SKILL.md`。本包配套的视频技能可按相对路径读取，外部 Maa 技能从实际安装位置或上游读取。
 
 若熟悉 Git，可以 `git clone https://github.com/dingi8528/maafgo-hellish-trial-skill.git`；下载公开代码无需 GitHub 账号。更新技能前比较差异，避免覆盖用户自行编辑的版本；只替换本技能包的目录，不覆盖宿主全局设置。
 
@@ -75,7 +77,7 @@ git clone --depth 1 https://github.com/dingi8528/MaaFgo_NEW.git 'D:\Games\MaaFgo
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt maa-mcp
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
 为源码编辑器安装项目要求的 Node.js（参考当前构建工作流），并在项目根目录运行：
@@ -87,22 +89,13 @@ npm --prefix web/battle-editor run build
 
 Node.js 只用于构建前端，已打包编辑器不需要重建。不要让用户为原生战斗额外安装 BBC。OCR 模型、ONNX 模型及依赖是否齐全按项目 README/MaaMCP 检查，不复用作者电脑上的打包版 site-packages 路径。
 
-## 6. 配置 MaaMCP
+## 6. 引用上游 Maa 技能与 MaaMCP 配置
 
-依据 [MaaMCP 官方文档](https://github.com/MAA-AI/MaaMCP) 在宿主新增 stdio MCP 服务。直接使用隔离环境的绝对解释器路径：
+通用技能直接采用 [Everything-Maa 安装说明](https://github.com/KhazixW2/Everything-Maa/blob/main/README.md)，服务安装和工具契约查 [MaaMCP 上游](https://github.com/MaaXYZ/MaaMCP)。本包不分发通用 MCP 技能，不重写一份上游安装手册。按 [MCP 定制附录](mcp-customization.md)选择已安装环境的接入方式：已有可用 MCP 时仅装所需技能；需要服务时由用户选择上游 `core` profile 或按 MaaMCP README 独立安装。
 
-```json
-{
-  "mcpServers": {
-    "MaaMCP": {
-      "command": "D:\\Games\\MaaFgo_NEW\\.venv\\Scripts\\python.exe",
-      "args": ["-m", "maa_mcp"]
-    }
-  }
-}
-```
+已存在的 MCP 服务与宿主配置要保留。上游默认安装范围可能包括整套技能和 MCP，不要把它当成只装一个技能；先预览范围。宿主使用 JSON、TOML 或设置界面时，按其实际配置方式操作。MaaFGO Agent 使用上节项目虚拟环境的依赖，MCP 可能在另一个环境；分别检查实际解释器和 MaaFramework 兼容性，不能从普通 `python` 缺包就认定 MCP 未安装。
 
-上面是通用 `mcpServers` JSON 格式；不要直接写进不采用该格式的宿主配置。优先通过宿主 MCP 设置界面添加“命令”和“参数”，宿主需要 TOML 等格式时按它的当前说明转换。保留其他 MCP 服务及原配置备份。服务应能列出 `find_adb_device_list`、`connect_adb_device`、`screencap`、`run_pipeline`、`stop_pipeline`；以本次 tools/list schema 为准。
+下面是**我们在 MaaFGO 中的可选兼容工具**，不是替代上游技能或服务。仅当遇到对应的已确认问题时使用，上游已经修复则优先直接复用上游。
 
 遇到 MuMu 发现或停止兼容问题，可使用本包主技能 `scripts/maa_mcp_bootstrap.py`（安装目录必须替换为实际路径），让 MCP 参数改为：
 
@@ -116,4 +109,4 @@ D:\Games\MaaFgo_NEW\output\maa-mcp-data
 
 每行是一个参数；不需要 `-m maa_mcp`。`--adb-path` 可省略，按本次安装位置查找；不要照搬别人的端口。这个脚本随本技能分发，不依赖开发者本机的私有工具。某些本地工程可能另有 `tools/start_maa_mcp.ps1`，应先检查它是否公开存在及是否绑定其他机器的 venv 路径。使用 MCP 实际虚拟环境的解释器调用随包 bootstrap，不要修改全局 site-packages。
 
-Agent 的 `child_exec` 必须指向装有项目依赖、与 MCP 使用兼容 MaaFramework 的解释器；优先在临时资源副本的 interface 中调整，不为此改写用户正式包版本字段。具体资源层、Agent、Option 解析及设备验证见配套 MCP 技能。
+Agent 的 `child_exec` 必须指向装有项目依赖、与 MCP 使用兼容 MaaFramework 的解释器；优先在临时资源副本的 interface 中调整，不为此改写用户正式包版本字段。资源层与 Task/Option 协议读上游技能，本项目接线要求见 [MCP 定制附录](mcp-customization.md)。
