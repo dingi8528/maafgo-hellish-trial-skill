@@ -1,0 +1,4 @@
+interface:
+  display_name: "地狱的试炼自主挑战"
+  short_description: "识别当期任务，研究攻略并通过MCP挑战，保存可编辑编队与策略"
+  default_prompt: "用 $maafgo-hellish-trial 完成当期试炼，逐场核对任务并保存策略。"

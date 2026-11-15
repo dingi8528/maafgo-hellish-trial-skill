@@ -1,0 +1,4 @@
+interface:
+  display_name: "B站攻略视频分析"
+  short_description: "下载并校验公开攻略视频，读取简介与分P，提取可追溯的编队及逐回合操作"
+  default_prompt: "使用 $bilibili-video-analysis 阅读推荐攻略，提取编队和逐回合策略，并注明实际覆盖范围。"
