@@ -409,7 +409,11 @@ class MediaTests(unittest.TestCase):
         self.assertTrue(checked["verified"], checked)
         track = checked["decoded_stream_coverage"][0]
         self.assertTrue(track["duration_metadata_complete"])
-        self.assertAlmostEqual(track["coverage_duration_seconds"], checked["container_duration_seconds"], delta=0.1)
+        # FFmpeg builds can round the final VFR packet differently. Keep the
+        # 100 ms bound while tolerating binary float subtraction at its edge
+        # (for example, 2.1 - 2.0 == 0.10000000000000009).
+        self.assertAlmostEqual(track["coverage_duration_seconds"], checked["container_duration_seconds"],
+                               delta=0.1 + 1e-9)
 
     def test_verify_command_is_offline_and_scope_is_explicit(self):
         output = self.folder / "verify"
